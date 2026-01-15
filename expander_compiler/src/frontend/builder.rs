@@ -237,16 +237,32 @@ impl<C: Config> BasicAPI<C> for Builder<C> {
     ) -> Variable {
         let xc = self.constant_value(x.clone());
         let yc = self.constant_value(y.clone());
-        if let Some(xv) = xc {
-            if let Some(yv) = yc {
-                return self.constant(xv * yv);
+        match (xc, yc) {
+            (Some(xv), Some(yv)) => self.constant(xv * yv),
+            (Some(coef), None) => {
+                let y = self.convert_to_variable(y);
+                self.instructions.push(SourceInstruction::LinComb(LinComb {
+                    terms: vec![LinCombTerm { var: y.id, coef }],
+                    constant: CircuitField::<C>::zero(),
+                }));
+                self.new_var()
+            }
+            (None, Some(coef)) => {
+                let x = self.convert_to_variable(x);
+                self.instructions.push(SourceInstruction::LinComb(LinComb {
+                    terms: vec![LinCombTerm { var: x.id, coef }],
+                    constant: CircuitField::<C>::zero(),
+                }));
+                self.new_var()
+            }
+            (None, None) => {
+                let x = self.convert_to_variable(x);
+                let y = self.convert_to_variable(y);
+                self.instructions
+                    .push(SourceInstruction::Mul(vec![x.id, y.id]));
+                self.new_var()
             }
         }
-        let x = self.convert_to_variable(x);
-        let y = self.convert_to_variable(y);
-        self.instructions
-            .push(SourceInstruction::Mul(vec![x.id, y.id]));
-        self.new_var()
     }
 
     fn div(
