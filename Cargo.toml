@@ -1,8 +1,4 @@
 [workspace]
-[workspace.package]
-version = "0.1.0"
-edition = "2021"
-
 resolver = "2"
 members = [
     "circuit-std-rs",
@@ -11,6 +7,10 @@ members = [
     "expander_compiler/macros",
     "rsa_circuit",
 ]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
 
 [profile.test]
 opt-level = 3
