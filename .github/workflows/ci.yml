@@ -60,4 +60,5 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - run: sudo apt-get update && sudo apt-get install -y libopenmpi-dev
       - run: cargo build --release
-      - run: cargo test
+      - run: cargo test -- --skip multi_core
+      - run: cargo test -- multi_core --test-threads=1
