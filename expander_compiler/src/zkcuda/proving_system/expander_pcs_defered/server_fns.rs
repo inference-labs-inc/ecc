@@ -6,9 +6,7 @@ use crate::{
         context::ComputationGraph,
         proving_system::{
             expander::structs::{ExpanderProverSetup, ExpanderVerifierSetup},
-            expander_parallelized::{
-                server_fns::{read_circuit, ServerFns},
-            },
+            expander_parallelized::server_fns::{read_circuit, ServerFns},
             expander_pcs_defered::{
                 prove_impl::mpi_prove_with_pcs_defered, setup_impl::pcs_setup_max_length_only,
             },

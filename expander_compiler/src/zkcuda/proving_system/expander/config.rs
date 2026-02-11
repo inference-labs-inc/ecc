@@ -46,10 +46,8 @@ pub type ZKCudaGF2 = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Raw, false>;
 pub type ZKCudaGoldilocks = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Raw, false>;
 pub type ZKCudaBabyBear = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Raw, false>;
 
-pub type ZKCudaBN254HyraxBatchPCS =
-    ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Hyrax, true>;
-pub type ZKCudaBN254KZGBatchPCS =
-    ZKCudaConfigImpl<BN254Config, BN254ConfigSha2UniKZG, true>;
+pub type ZKCudaBN254HyraxBatchPCS = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Hyrax, true>;
+pub type ZKCudaBN254KZGBatchPCS = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2UniKZG, true>;
 
 pub type ZKCudaM31BatchPCS = ZKCudaConfigImpl<M31Config, M31x16ConfigSha2RawVanilla, true>;
 pub type ZKCudaGF2BatchPCS = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Raw, true>;

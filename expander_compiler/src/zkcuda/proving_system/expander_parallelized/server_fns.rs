@@ -11,8 +11,7 @@ use crate::{
                 structs::{ExpanderProverSetup, ExpanderVerifierSetup},
             },
             expander_parallelized::{
-                prove_impl::mpi_prove_impl,
-                shared_memory_utils::SharedMemoryEngine,
+                prove_impl::mpi_prove_impl, shared_memory_utils::SharedMemoryEngine,
             },
             CombinedProof, Expander, ParallelizedExpander,
         },
