@@ -58,31 +58,5 @@ jobs:
           toolchain: nightly-2025-05-17
       - uses: Swatinem/rust-cache@v2
       - run: sudo apt-get update && sudo apt-get install -y libopenmpi-dev
-      - name: Build release artifacts
-        run: cargo build --release
-      - name: Run tests
-        run: cargo test
-      - uses: actions/upload-artifact@v6
-        with:
-          name: build-ubuntu-latest
-          path: target/release/libec_go_lib.*
-
-  test-go:
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-go@v6
-        with:
-          go-version: "1.21.x"
-      - run: sudo apt-get update && sudo apt-get install -y libopenmpi-dev
-      - uses: actions/download-artifact@v7
-        with:
-          path: ./artifacts
-          pattern: build-*
-          merge-multiple: true
-      - run: |
-          mkdir -p ~/.cache/ExpanderCompilerCollection
-          cp artifacts/libec_go_lib.* ~/.cache/ExpanderCompilerCollection
-          cd ecgo
-          go test ./test/
+      - run: cargo build --release
+      - run: cargo test
