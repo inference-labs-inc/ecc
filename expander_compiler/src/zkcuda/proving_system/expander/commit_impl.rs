@@ -25,12 +25,12 @@ where
 
     let mut scratch = <C::PCSConfig as ExpanderPCS<C::FieldConfig>>::init_scratch_pad(
         &params,
-        &MPIConfig::prover_new(None, None),
+        &MPIConfig::prover_new(),
     );
 
     let commitment = <C::PCSConfig as ExpanderPCS<C::FieldConfig>>::commit(
         &params,
-        &MPIConfig::prover_new(None, None),
+        &MPIConfig::prover_new(),
         p_key,
         &RefMultiLinearPoly::from_ref(vals),
         &mut scratch,

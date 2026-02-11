@@ -294,7 +294,7 @@ fn keccak_gf2_full() {
 
     // prove
     expander_circuit.evaluate();
-    let mpi_config = MPIConfig::prover_new(None, None);
+    let mpi_config = MPIConfig::prover_new();
     let (claimed_v, proof) =
         executor::prove::<GF2Config>(&mut expander_circuit, mpi_config.clone());
 

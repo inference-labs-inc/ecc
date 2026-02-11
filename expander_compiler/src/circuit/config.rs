@@ -34,13 +34,11 @@ pub type CircuitField<C> = <<C as GKREngine>::FieldConfig as FieldEngine>::Circu
 pub type ChallengeField<C> = <<C as GKREngine>::FieldConfig as FieldEngine>::ChallengeField;
 pub type SIMDField<C> = <<C as GKREngine>::FieldConfig as FieldEngine>::SimdCircuitField;
 
-// The Lifetime parameter is used to ensure the mpi config is valid during the proving process.
-// TODO: We should probably not include it in ECC.
-pub type BN254Config = BN254ConfigMIMC5Raw<'static>;
-pub type M31Config = M31x16ConfigSha2RawVanilla<'static>;
-pub type GF2Config = GF2ExtConfigSha2Raw<'static>;
-pub type GoldilocksConfig = Goldilocksx8ConfigSha2Raw<'static>;
-pub type BabyBearConfig = BabyBearx16ConfigSha2Raw<'static>;
+pub type BN254Config = BN254ConfigMIMC5Raw;
+pub type M31Config = M31x16ConfigSha2RawVanilla;
+pub type GF2Config = GF2ExtConfigSha2Raw;
+pub type GoldilocksConfig = Goldilocksx8ConfigSha2Raw;
+pub type BabyBearConfig = BabyBearx16ConfigSha2Raw;
 
 impl Config for M31Config {
     const CONFIG_ID: usize = 1;
@@ -53,8 +51,6 @@ impl Config for BN254Config {
 impl Config for GF2Config {
     const CONFIG_ID: usize = 3;
 
-    // temporary fix for Keccak_GF2
-    // TODO: measure actual costs
     const COST_MUL: usize = 200;
 
     const ENABLE_RANDOM_COMBINATION: bool = false;

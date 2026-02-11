@@ -47,7 +47,6 @@ jobs:
           toolchain: nightly-2025-05-17
           components: clippy
       - uses: Swatinem/rust-cache@v2
-      - run: sudo apt-get update && sudo apt-get install -y libopenmpi-dev
       - run: cargo clippy --all
 
   test:
@@ -58,7 +57,6 @@ jobs:
         with:
           toolchain: nightly-2025-05-17
       - uses: Swatinem/rust-cache@v2
-      - run: sudo apt-get update && sudo apt-get install -y libopenmpi-dev
       - run: cargo build --release
       - run: cargo test -- --skip multi_core
       - run: cargo test -- multi_core --test-threads=1

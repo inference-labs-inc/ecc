@@ -1,9 +1,8 @@
 #![allow(static_mut_refs)]
 
-use crate::zkcuda::proving_system::expander_parallelized::server_ctrl::SharedMemoryWINWrapper;
 use crate::zkcuda::proving_system::{CombinedProof, Expander};
 use arith::Field;
-use gkr_engine::{ExpanderPCS, FieldEngine, GKREngine, MPIConfig, MPIEngine, MPISharedMemory};
+use gkr_engine::{ExpanderPCS, FieldEngine, GKREngine};
 use serdes::ExpSerde;
 use shared_memory::{Shmem, ShmemConf};
 
@@ -28,10 +27,7 @@ pub static mut SHARED_MEMORY: SharedMemory = SharedMemory {
 
 pub struct SharedMemoryEngine {}
 
-/// This impl block contains utility functions for managing shared memory in the context of the Expander GKR proving system.
 impl SharedMemoryEngine {
-    /// Allocate shared memory for the given name and size if it is not already allocated or if the existing allocation is smaller than the target size.
-    /// The result is stored in the provided `handle`, it's the caller's responsibility to ensure that the `handle` lives long enough for the reader to access the shared memory.
     fn allocate_shared_memory_if_necessary(
         handle: &mut Option<Shmem>,
         name: &str,
@@ -51,7 +47,6 @@ impl SharedMemoryEngine {
         );
     }
 
-    /// Write an object to shared memory. If the shared memory is not allocated or is too small, it will be allocated with the size of the serialized object.
     fn write_object_to_shared_memory<T: ExpSerde>(
         object: &T,
         shared_memory_ref: &mut Option<Shmem>,
@@ -71,7 +66,6 @@ impl SharedMemoryEngine {
         }
     }
 
-    /// Read an object from shared memory. If the shared memory is not allocated, it will panic.
     pub fn read_object_from_shared_memory<T: ExpSerde>(
         shared_memory_ref: &str,
         offset: usize,
@@ -88,7 +82,6 @@ impl SharedMemoryEngine {
     }
 }
 
-/// This impl block contains functions for reading/writing specific objects to shared memory.
 impl SharedMemoryEngine {
     pub fn write_pcs_setup_to_shared_memory<F: FieldEngine, PCS: ExpanderPCS<F>>(
         pcs_setup: &(ExpanderProverSetup<F, PCS>, ExpanderVerifierSetup<F, PCS>),
@@ -123,7 +116,6 @@ impl SharedMemoryEngine {
 
             let mut ptr = SHARED_MEMORY.witness.as_mut().unwrap().as_ptr();
 
-            // Copy the length of the vector
             let len = values.len();
             let len_ptr = &len as *const usize as *const u8;
             std::ptr::copy_nonoverlapping(len_ptr, ptr, std::mem::size_of::<usize>());
@@ -172,36 +164,6 @@ impl SharedMemoryEngine {
                 vals
             })
             .collect()
-    }
-
-    pub fn read_shared_witness_from_shared_memory<F: FieldEngine>(
-        global_mpi_config: &MPIConfig<'static>,
-    ) -> (Vec<Vec<F::SimdCircuitField>>, SharedMemoryWINWrapper) {
-        let (mut mpi_shared_mem_ptr, mem_win) = if global_mpi_config.is_root() {
-            let witness = Self::read_witness_from_shared_memory::<F>();
-            let bytes_size = std::mem::size_of::<usize>()
-                + witness.iter().map(|v| v.bytes_size()).sum::<usize>();
-            let (mut mpi_shared_mem_ptr, mem_win) = global_mpi_config.create_shared_mem(bytes_size);
-            let mpi_shared_mem_ptr_init = mpi_shared_mem_ptr;
-
-            witness.len().to_memory(&mut mpi_shared_mem_ptr);
-            witness.iter().for_each(|vals| {
-                vals.to_memory(&mut mpi_shared_mem_ptr);
-            });
-
-            (mpi_shared_mem_ptr_init, mem_win)
-        } else {
-            global_mpi_config.create_shared_mem(0)
-        };
-
-        global_mpi_config.barrier();
-
-        let n_witness = usize::new_from_memory(&mut mpi_shared_mem_ptr);
-        let witness = (0..n_witness)
-            .map(|_| Vec::<F::SimdCircuitField>::new_from_memory(&mut mpi_shared_mem_ptr))
-            .collect::<Vec<_>>();
-
-        (witness, SharedMemoryWINWrapper { win: mem_win })
     }
 
     pub fn write_proof_to_shared_memory<

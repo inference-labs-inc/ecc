@@ -27,7 +27,7 @@ use crate::{
 };
 
 pub fn mpi_prove_impl<C, ECCConfig>(
-    global_mpi_config: &MPIConfig<'static>,
+    global_mpi_config: &MPIConfig,
     prover_setup: &ExpanderProverSetup<C::FieldConfig, C::PCSConfig>,
     computation_graph: &ComputationGraph<ECCConfig>,
     values: &[impl AsRef<[SIMDField<C>]>],
@@ -123,7 +123,7 @@ where
 
 #[allow(clippy::too_many_arguments)]
 pub fn prove_kernel_gkr<F, T, ECCConfig>(
-    mpi_config: &MPIConfig<'static>,
+    mpi_config: &MPIConfig,
     kernel: &Kernel<ECCConfig>,
     commitments_values: &[&[F::SimdCircuitField]],
     parallel_count: usize,

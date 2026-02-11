@@ -181,14 +181,14 @@ pub fn pcs_local_open_impl<C: GKREngine>(
     transcript.lock_proof();
     let opening = <C::PCSConfig as ExpanderPCS<C::FieldConfig>>::open(
         &params,
-        &MPIConfig::prover_new(None, None),
+        &MPIConfig::prover_new(),
         p_key,
         &poly,
         challenge,
         transcript,
         &<C::PCSConfig as ExpanderPCS<C::FieldConfig>>::init_scratch_pad(
             &params,
-            &MPIConfig::prover_new(None, None),
+            &MPIConfig::prover_new(),
         ),
     )
     .unwrap();

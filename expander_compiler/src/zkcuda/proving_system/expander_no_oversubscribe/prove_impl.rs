@@ -34,7 +34,7 @@ use crate::{
 };
 
 pub fn mpi_prove_no_oversubscribe_impl<ZC: ZKCudaConfig>(
-    global_mpi_config: &MPIConfig<'static>,
+    global_mpi_config: &MPIConfig,
     prover_setup: &ExpanderProverSetup<GetFieldConfig<ZC>, GetPCS<ZC>>,
     computation_graph: &ComputationGraph<ZC::ECCConfig>,
     values: &[impl AsRef<[SIMDField<ZC::ECCConfig>]>],
@@ -196,7 +196,7 @@ where
 
 #[allow(clippy::too_many_arguments)]
 pub fn prove_kernel_gkr_no_oversubscribe<F, T, ECCConfig>(
-    mpi_config: &MPIConfig<'static>,
+    mpi_config: &MPIConfig,
     kernel: &Kernel<ECCConfig>,
     commitments_values: &[&[F::SimdCircuitField]],
     parallel_count: usize,
@@ -320,7 +320,7 @@ where
 }
 
 pub fn prove_kernel_gkr_internal<FBasic, FMulti, T, ECCConfig>(
-    mpi_config: &MPIConfig<'static>,
+    mpi_config: &MPIConfig,
     kernel: &Kernel<ECCConfig>,
     commitments_values: &[&[FBasic::SimdCircuitField]],
     parallel_count: usize,

@@ -8,9 +8,6 @@ use rand::{Rng, SeedableRng};
 use serdes::ExpSerde;
 use tiny_keccak::Hasher;
 
-// We will show two ways to archive the same goal: compute multiple Keccak hashes in parallel.
-// The first way is to run multiple kernels in parallel, each of which computes a single Keccak hash. (Recommended)
-// The second way is to run a single kernel that computes multiple Keccak hashes.
 const N_PARALLEL: usize = 4;
 
 const CHECK_BITS: usize = 256;
@@ -344,52 +341,27 @@ fn get_computation_graph() -> ComputationGraph<M31Config> {
 
 #[allow(unreachable_patterns)]
 fn test_shared_mem_helper<T: MPISharedMemory + ExpSerde + std::fmt::Debug>(
-    mpi_config: &MPIConfig,
+    _mpi_config: &MPIConfig,
     t: Option<T>,
 ) {
+    let data = t.unwrap();
+
     let mut original_serialization = vec![];
-    let (data, mut window) = if mpi_config.is_root() {
-        t.as_ref()
-            .unwrap()
-            .serialize_into(&mut original_serialization)
-            .unwrap();
-        mpi_config.consume_obj_and_create_shared(t)
-    } else {
-        mpi_config.consume_obj_and_create_shared(t)
-    };
+    data.serialize_into(&mut original_serialization).unwrap();
 
     let mut shared_serialization = vec![];
     data.serialize_into(&mut shared_serialization).unwrap();
 
-    let mut gathered_bytes = if mpi_config.is_root() {
-        vec![0u8; original_serialization.len() * mpi_config.world_size()]
-    } else {
-        vec![]
-    };
-    mpi_config.gather_vec(&shared_serialization, &mut gathered_bytes);
-    if mpi_config.is_root() {
-        gathered_bytes
-            .chunks_exact_mut(original_serialization.len())
-            .enumerate()
-            .for_each(|(i, chunk)| {
-                assert_eq!(
-                    chunk,
-                    &original_serialization[..],
-                    "rank {} not consistent",
-                    i
-                );
-            });
-    }
-    data.discard_control_of_shared_mem();
-    mpi_config.free_shared_mem(&mut window);
+    assert_eq!(
+        original_serialization, shared_serialization,
+        "Serializations do not match"
+    );
 }
 
 #[test]
 #[ignore]
 fn test_cg_mpi_share() {
-    let universe = mpi::initialize().unwrap();
-    let world = universe.world();
-    let mpi_config = MPIConfig::prover_new(Some(&universe), Some(&world));
+    let mpi_config = MPIConfig::prover_new();
     let cg = get_computation_graph();
     test_shared_mem_helper(&mpi_config, Some(cg));
 }
