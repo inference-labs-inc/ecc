@@ -67,7 +67,10 @@ impl<C: GKREngine, ECCConfig: Config<FieldConfig = C::FieldConfig>> ProvingSyste
 
                 let parallel_count = next_power_of_two(template.parallel_count());
                 if local_proof.data.len() != parallel_count {
-                    println!("Proof data length mismatch: expected {parallel_count}, got {}", local_proof.data.len());
+                    println!(
+                        "Proof data length mismatch: expected {parallel_count}, got {}",
+                        local_proof.data.len()
+                    );
                     return false;
                 }
                 let kernel = &computation_graph.kernels()[template.kernel_id()];
