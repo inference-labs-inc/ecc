@@ -67,8 +67,7 @@ impl<C: GKREngine, ECCConfig: Config<FieldConfig = C::FieldConfig>> ProvingSyste
 
                 let parallel_count = next_power_of_two(template.parallel_count());
                 let kernel = &computation_graph.kernels()[template.kernel_id()];
-                let mut expander_circuit =
-                    kernel.layered_circuit().export_to_expander_flatten();
+                let mut expander_circuit = kernel.layered_circuit().export_to_expander_flatten();
 
                 for i in 0..parallel_count {
                     let mut transcript = C::TranscriptConfig::new();
