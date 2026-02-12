@@ -179,8 +179,7 @@ impl SharedMemoryEngine {
     pub fn read_proof_from_shared_memory<
         C: GKREngine,
         ECCConfig: Config<FieldConfig = C::FieldConfig>,
-    >() -> CombinedProof<ECCConfig, Expander<C>>
-where {
+    >() -> CombinedProof<ECCConfig, Expander<C>> {
         Self::read_object_from_shared_memory("proof", 0)
     }
 }

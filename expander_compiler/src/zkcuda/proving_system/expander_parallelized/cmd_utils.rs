@@ -2,12 +2,7 @@ use gkr_engine::{ExpanderPCS, FieldEngine, FieldType, GKREngine, PolynomialCommi
 use std::process::Command;
 
 #[allow(clippy::zombie_processes)]
-pub fn start_server<C: GKREngine>(
-    binary: &str,
-    _max_parallel_count: usize,
-    port_number: u16,
-    batch_pcs: bool,
-) {
+pub fn start_server<C: GKREngine>(binary: &str, port_number: u16, batch_pcs: bool) {
     let (field_name, pcs_name) = parse_config::<C>();
 
     let batch_pcs_option = if batch_pcs { "--batch-pcs" } else { "" };
@@ -17,9 +12,7 @@ pub fn start_server<C: GKREngine>(
     exec_command(&cmd_str, false);
 }
 
-fn parse_config<C: GKREngine>() -> (String, String)
-where
-{
+fn parse_config<C: GKREngine>() -> (String, String) {
     let field_name = match <C::FieldConfig as FieldEngine>::FIELD_TYPE {
         FieldType::M31x16 => "M31",
         FieldType::GF2Ext128 => "GF2",

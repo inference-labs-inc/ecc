@@ -194,9 +194,7 @@ pub fn extract_pcs_claims<'a, C: GKREngine>(
 ) -> (
     Vec<&'a [SIMDField<C>]>,
     Vec<ExpanderSingleVarChallenge<C::FieldConfig>>,
-)
-where
-{
+) {
     let mut commitment_values_rt = vec![];
     let mut challenges = vec![];
 

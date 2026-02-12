@@ -42,8 +42,7 @@ where
         _global_mpi_config: &MPIConfig,
         witness_target: &mut Vec<Vec<SIMDField<C>>>,
     ) {
-        while let Some(_w) = witness_target.pop() {}
-        assert!(witness_target.is_empty());
+        witness_target.clear();
 
         let witness_v = SharedMemoryEngine::read_witness_from_shared_memory::<C::FieldConfig>();
         *witness_target = witness_v;

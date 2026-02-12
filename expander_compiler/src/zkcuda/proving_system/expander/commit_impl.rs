@@ -23,14 +23,14 @@ where
     let n_vars = vals.len().ilog2() as usize;
     let params = <C::PCSConfig as ExpanderPCS<C::FieldConfig>>::gen_params(n_vars, 1);
 
-    let mut scratch = <C::PCSConfig as ExpanderPCS<C::FieldConfig>>::init_scratch_pad(
-        &params,
-        &MPIConfig::prover_new(),
-    );
+    let mpi_config = MPIConfig::prover_new();
+
+    let mut scratch =
+        <C::PCSConfig as ExpanderPCS<C::FieldConfig>>::init_scratch_pad(&params, &mpi_config);
 
     let commitment = <C::PCSConfig as ExpanderPCS<C::FieldConfig>>::commit(
         &params,
-        &MPIConfig::prover_new(),
+        &mpi_config,
         p_key,
         &RefMultiLinearPoly::from_ref(vals),
         &mut scratch,

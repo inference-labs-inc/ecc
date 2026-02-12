@@ -37,7 +37,6 @@ where
         client_launch_server_and_setup::<ZC::GKRConfig, ZC::ECCConfig>(
             &server_binary,
             computation_graph,
-            false,
             ZC::BATCH_PCS,
         )
     }
