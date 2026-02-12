@@ -1,4 +1,5 @@
 use crate::frontend::SIMDField;
+use crate::utils::misc::next_power_of_two;
 use crate::zkcuda::context::ComputationGraph;
 use crate::zkcuda::proving_system::expander::config::{GetFieldConfig, GetPCS, ZKCudaConfig};
 use crate::zkcuda::proving_system::expander::structs::{
@@ -8,12 +9,12 @@ use crate::zkcuda::proving_system::expander_parallelized::client_utils::{
     client_launch_server_and_setup, client_parse_args, client_send_witness_and_prove, wait_async,
     ClientHttpHelper,
 };
-use crate::zkcuda::proving_system::{
-    CombinedProof, ExpanderPCSDefered, ParallelizedExpander, ProvingSystem,
-};
+use crate::zkcuda::proving_system::expander_parallelized::verify_impl::verify_kernel;
+use crate::zkcuda::proving_system::{CombinedProof, ExpanderPCSDefered, ProvingSystem};
 
 use super::super::Expander;
 
+use expander_utils::timer::Timer;
 use gkr_engine::ExpanderPCS;
 
 pub struct ExpanderNoOverSubscribe<ZC: ZKCudaConfig> {
@@ -37,7 +38,6 @@ where
         client_launch_server_and_setup::<ZC::GKRConfig, ZC::ECCConfig>(
             &server_binary,
             computation_graph,
-            false,
             ZC::BATCH_PCS,
         )
     }
@@ -55,18 +55,37 @@ where
         computation_graph: &ComputationGraph<ZC::ECCConfig>,
         proof: &Self::Proof,
     ) -> bool {
-        match ZC::BATCH_PCS {
-            true => ExpanderPCSDefered::<ZC::GKRConfig>::verify(
+        if ZC::BATCH_PCS {
+            return ExpanderPCSDefered::<ZC::GKRConfig>::verify(
                 verifier_setup,
                 computation_graph,
                 proof,
-            ),
-            false => ParallelizedExpander::<ZC::GKRConfig>::verify(
-                verifier_setup,
-                computation_graph,
-                proof,
-            ),
+            );
         }
+
+        let verification_timer = Timer::new("Verify all kernels", true);
+        let verified = proof
+            .proofs
+            .iter()
+            .zip(computation_graph.proof_templates().iter())
+            .all(|(local_proof, template)| {
+                let local_commitments = template
+                    .commitment_indices()
+                    .iter()
+                    .map(|idx| &proof.commitments[*idx])
+                    .collect::<Vec<_>>();
+
+                verify_kernel::<ZC::GKRConfig, ZC::ECCConfig>(
+                    verifier_setup,
+                    &computation_graph.kernels()[template.kernel_id()],
+                    local_proof,
+                    &local_commitments,
+                    next_power_of_two(template.parallel_count()),
+                    template.is_broadcast(),
+                )
+            });
+        verification_timer.stop();
+        verified
     }
 
     fn post_process() {

@@ -72,13 +72,13 @@ where
         <C::PCSConfig as ExpanderPCS<C::FieldConfig>>::gen_params(max_length.ilog2() as usize, 1);
     let scratch_pad = <C::PCSConfig as ExpanderPCS<C::FieldConfig>>::init_scratch_pad(
         &params,
-        &MPIConfig::prover_new(None, None),
+        &MPIConfig::prover_new(),
     );
 
     transcript.lock_proof();
     let (vals, opening) = <C::PCSConfig as ExpanderPCS<C::FieldConfig>>::multi_points_batch_open(
         &params,
-        &MPIConfig::prover_new(None, None),
+        &MPIConfig::prover_new(),
         prover_setup.p_keys.get(&max_length).unwrap(),
         &polys,
         challenges,
@@ -97,7 +97,7 @@ where
 }
 
 pub fn mpi_prove_with_pcs_defered<C, ECCConfig>(
-    global_mpi_config: &MPIConfig<'static>,
+    global_mpi_config: &MPIConfig,
     prover_setup: &ExpanderProverSetup<C::FieldConfig, C::PCSConfig>,
     computation_graph: &ComputationGraph<ECCConfig>,
     values: &[impl AsRef<[SIMDField<C>]>],
@@ -194,9 +194,7 @@ pub fn extract_pcs_claims<'a, C: GKREngine>(
 ) -> (
     Vec<&'a [SIMDField<C>]>,
     Vec<ExpanderSingleVarChallenge<C::FieldConfig>>,
-)
-where
-{
+) {
     let mut commitment_values_rt = vec![];
     let mut challenges = vec![];
 

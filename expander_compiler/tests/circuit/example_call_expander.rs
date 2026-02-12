@@ -46,7 +46,7 @@ fn example<C: Config>() {
 
     let mut expander_circuit = compile_result.layered_circuit.export_to_expander_flatten();
 
-    let mpi_config = MPIConfig::prover_new(None, None);
+    let mpi_config = MPIConfig::prover_new();
 
     let (simd_input, simd_public_input) = witness.to_simd();
     println!("{} {}", simd_input.len(), simd_public_input.len());

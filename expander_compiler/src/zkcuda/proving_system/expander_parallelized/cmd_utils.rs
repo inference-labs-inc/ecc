@@ -2,31 +2,17 @@ use gkr_engine::{ExpanderPCS, FieldEngine, FieldType, GKREngine, PolynomialCommi
 use std::process::Command;
 
 #[allow(clippy::zombie_processes)]
-pub fn start_server<C: GKREngine>(
-    binary: &str,
-    max_parallel_count: usize,
-    port_number: u16,
-    batch_pcs: bool,
-) {
-    let (overscribe, field_name, pcs_name) = parse_config::<C>(max_parallel_count);
+pub fn start_server<C: GKREngine>(binary: &str, port_number: u16, batch_pcs: bool) {
+    let (field_name, pcs_name) = parse_config::<C>();
 
     let batch_pcs_option = if batch_pcs { "--batch-pcs" } else { "" };
     let cmd_str = format!(
-        "mpiexec -n {max_parallel_count} {overscribe} {binary} --field-type {field_name} --poly-commit {pcs_name} --port-number {port_number} {batch_pcs_option}"
+        "{binary} --field-type {field_name} --poly-commit {pcs_name} --port-number {port_number} {batch_pcs_option}"
     );
     exec_command(&cmd_str, false);
 }
 
-fn parse_config<C: GKREngine>(mpi_size: usize) -> (String, String, String)
-where
-{
-    let oversubscription = if mpi_size > num_cpus::get_physical() {
-        println!("Warning: Not enough cores available for the requested number of processes. Using oversubscription.");
-        "--oversubscribe"
-    } else {
-        ""
-    };
-
+fn parse_config<C: GKREngine>() -> (String, String) {
     let field_name = match <C::FieldConfig as FieldEngine>::FIELD_TYPE {
         FieldType::M31x16 => "M31",
         FieldType::GF2Ext128 => "GF2",
@@ -43,11 +29,7 @@ where
         _ => panic!("Unsupported PCS type"),
     };
 
-    (
-        oversubscription.to_string(),
-        field_name.to_string(),
-        pcs_name.to_string(),
-    )
+    (field_name.to_string(), pcs_name.to_string())
 }
 
 #[allow(clippy::zombie_processes)]

@@ -13,13 +13,11 @@ use gkr_hashers::SHA256hasher;
 use halo2curves::bn256::Bn256;
 use poly_commit::HyperUniKZGPCS;
 
-pub struct BN254ConfigSha2UniKZG<'a> {
-    _phantom: std::marker::PhantomData<&'a ()>,
-}
+pub struct BN254ConfigSha2UniKZG;
 
-impl<'a> GKREngine for BN254ConfigSha2UniKZG<'a> {
+impl GKREngine for BN254ConfigSha2UniKZG {
     type FieldConfig = <BN254Config as GKREngine>::FieldConfig;
-    type MPIConfig = MPIConfig<'a>;
+    type MPIConfig = MPIConfig;
     type TranscriptConfig = BytesHashTranscript<SHA256hasher>;
     type PCSConfig = HyperUniKZGPCS<Bn256>;
     const SCHEME: GKRScheme = GKRScheme::Vanilla;

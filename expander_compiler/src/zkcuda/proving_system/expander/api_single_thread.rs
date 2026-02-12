@@ -87,7 +87,7 @@ where
                 &local_vals,
                 kernel.layered_circuit_input(),
                 &mut transcript,
-                &MPIConfig::prover_new(None, None),
+                &MPIConfig::prover_new(),
             );
 
             partition_gkr_claims_and_open_pcs_no_mpi::<C>(

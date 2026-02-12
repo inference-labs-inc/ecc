@@ -19,8 +19,7 @@ fn prove_circuit_file_inner<C: config::Config>(
     circuit_filename: &str,
     witness: &[u8],
 ) -> Result<Vec<u8>, String> {
-    // (None, None) means single core execution
-    let mpi_config = MPIConfig::prover_new(None, None);
+    let mpi_config = MPIConfig::prover_new();
 
     let mut circuit =
         expander_circuit::Circuit::<C::FieldConfig>::single_thread_prover_load_circuit::<C>(

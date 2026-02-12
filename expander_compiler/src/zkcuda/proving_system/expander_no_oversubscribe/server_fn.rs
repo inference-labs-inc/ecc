@@ -13,7 +13,7 @@ use crate::{
             expander_no_oversubscribe::{
                 profiler::NBytesProfiler, prove_impl::mpi_prove_no_oversubscribe_impl,
             },
-            expander_parallelized::{server_ctrl::SharedMemoryWINWrapper, server_fns::ServerFns},
+            expander_parallelized::server_fns::ServerFns,
             CombinedProof, Expander, ExpanderNoOverSubscribe, ExpanderPCSDefered,
             ParallelizedExpander,
         },
@@ -25,12 +25,11 @@ where
     <ZC::GKRConfig as GKREngine>::FieldConfig: FieldEngine<CircuitField = Fr, ChallengeField = Fr>,
 {
     fn setup_request_handler(
-        global_mpi_config: &MPIConfig<'static>,
+        global_mpi_config: &MPIConfig,
         setup_file: Option<String>,
         computation_graph: &mut ComputationGraph<ZC::ECCConfig>,
         prover_setup: &mut ExpanderProverSetup<GetFieldConfig<ZC>, GetPCS<ZC>>,
         verifier_setup: &mut ExpanderVerifierSetup<GetFieldConfig<ZC>, GetPCS<ZC>>,
-        mpi_win: &mut Option<SharedMemoryWINWrapper>,
     ) {
         match ZC::BATCH_PCS {
             true => ExpanderPCSDefered::<ZC::GKRConfig>::setup_request_handler(
@@ -39,7 +38,6 @@ where
                 computation_graph,
                 prover_setup,
                 verifier_setup,
-                mpi_win,
             ),
             false => ParallelizedExpander::<ZC::GKRConfig>::setup_request_handler(
                 global_mpi_config,
@@ -47,13 +45,12 @@ where
                 computation_graph,
                 prover_setup,
                 verifier_setup,
-                mpi_win,
             ),
         }
     }
 
     fn prove_request_handler(
-        global_mpi_config: &MPIConfig<'static>,
+        global_mpi_config: &MPIConfig,
         prover_setup: &ExpanderProverSetup<GetFieldConfig<ZC>, GetPCS<ZC>>,
         computation_graph: &ComputationGraph<ZC::ECCConfig>,
         values: &[impl AsRef<[SIMDField<ZC::ECCConfig>]>],

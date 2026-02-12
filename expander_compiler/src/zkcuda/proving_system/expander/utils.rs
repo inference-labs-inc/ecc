@@ -3,9 +3,9 @@ use gkr_engine::{ExpanderPCS, FieldEngine, MPIConfig, StructuredReferenceString,
 use poly_commit::expander_pcs_init_testing_only;
 
 #[allow(clippy::type_complexity)]
-pub fn pcs_testing_setup_fixed_seed<'a, F: FieldEngine, T: Transcript, PCS: ExpanderPCS<F>>(
+pub fn pcs_testing_setup_fixed_seed<F: FieldEngine, T: Transcript, PCS: ExpanderPCS<F>>(
     vals_len: usize,
-    mpi_config: &MPIConfig<'a>,
+    mpi_config: &MPIConfig,
 ) -> (
     PCS::Params,
     <PCS::SRS as StructuredReferenceString>::PKey,

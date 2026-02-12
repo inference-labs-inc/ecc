@@ -38,22 +38,18 @@ where
     const BATCH_PCS: bool = BATCH_PCS;
 }
 
-// Concrete ZKCudaConfig types for various configurations
-pub type ZKCudaBN254Hyrax<'a> = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Hyrax<'a>, false>;
-pub type ZKCudaBN254KZG<'a> = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2UniKZG<'a>, false>;
+pub type ZKCudaBN254Hyrax = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Hyrax, false>;
+pub type ZKCudaBN254KZG = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2UniKZG, false>;
 
-pub type ZKCudaM31<'a> = ZKCudaConfigImpl<M31Config, M31x16ConfigSha2RawVanilla<'a>, false>;
-pub type ZKCudaGF2<'a> = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Raw<'a>, false>;
-pub type ZKCudaGoldilocks<'a> = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Raw<'a>, false>;
-pub type ZKCudaBabyBear<'a> = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Raw<'a>, false>;
+pub type ZKCudaM31 = ZKCudaConfigImpl<M31Config, M31x16ConfigSha2RawVanilla, false>;
+pub type ZKCudaGF2 = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Raw, false>;
+pub type ZKCudaGoldilocks = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Raw, false>;
+pub type ZKCudaBabyBear = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Raw, false>;
 
-// Batch PCS types
-pub type ZKCudaBN254HyraxBatchPCS<'a> =
-    ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Hyrax<'a>, true>;
-pub type ZKCudaBN254KZGBatchPCS<'a> =
-    ZKCudaConfigImpl<BN254Config, BN254ConfigSha2UniKZG<'a>, true>;
+pub type ZKCudaBN254HyraxBatchPCS = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Hyrax, true>;
+pub type ZKCudaBN254KZGBatchPCS = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2UniKZG, true>;
 
-pub type ZKCudaM31BatchPCS<'a> = ZKCudaConfigImpl<M31Config, M31x16ConfigSha2RawVanilla<'a>, true>;
-pub type ZKCudaGF2BatchPCS<'a> = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Raw<'a>, true>;
-pub type ZKCudaGoldilocksBatchPCS<'a> = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Raw<'a>, true>;
-pub type ZKCudaBabyBearBatchPCS<'a> = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Raw<'a>, true>;
+pub type ZKCudaM31BatchPCS = ZKCudaConfigImpl<M31Config, M31x16ConfigSha2RawVanilla, true>;
+pub type ZKCudaGF2BatchPCS = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Raw, true>;
+pub type ZKCudaGoldilocksBatchPCS = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Raw, true>;
+pub type ZKCudaBabyBearBatchPCS = ZKCudaConfigImpl<BN254Config, BN254ConfigSha2Raw, true>;
