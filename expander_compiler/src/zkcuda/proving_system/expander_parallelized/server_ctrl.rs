@@ -119,7 +119,8 @@ where
             println!("Received prove request");
             let prove_timer = Timer::new("server prove", true);
 
-            let witness = state.witness.lock().await;
+            let mut witness = state.witness.lock().await;
+            S::setup_shared_witness(&state.global_mpi_config, &mut witness);
 
             let prover_setup_guard = state.prover_setup.lock().await;
             let computation_graph = state.computation_graph.lock().await;
