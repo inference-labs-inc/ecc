@@ -15,8 +15,8 @@ use crate::{
             expander::{
                 commit_impl::local_commit_impl,
                 prove_impl::{
-                    get_local_vals, pcs_local_open_impl, prepare_expander_circuit,
-                    prove_gkr_with_local_vals,
+                    get_local_vals, partition_gkr_claims_and_open_pcs_no_mpi, pcs_local_open_impl,
+                    prepare_expander_circuit, prove_gkr_with_local_vals,
                 },
                 structs::{ExpanderCommitmentState, ExpanderProof, ExpanderProverSetup},
             },
@@ -27,7 +27,7 @@ use crate::{
 };
 
 pub fn mpi_prove_impl<C, ECCConfig>(
-    global_mpi_config: &MPIConfig,
+    _global_mpi_config: &MPIConfig,
     prover_setup: &ExpanderProverSetup<C::FieldConfig, C::PCSConfig>,
     computation_graph: &ComputationGraph<ECCConfig>,
     values: &[impl AsRef<[SIMDField<C>]>],
@@ -36,89 +36,76 @@ where
     C: GKREngine,
     ECCConfig: Config<FieldConfig = C::FieldConfig>,
 {
-    let commit_timer = Timer::new("Commit to all input", global_mpi_config.is_root());
-    let (commitments, states) = if global_mpi_config.is_root() {
-        let (commitments, states) = values
-            .iter()
-            .map(|value| {
-                local_commit_impl::<C, ECCConfig>(
-                    prover_setup.p_keys.get(&value.as_ref().len()).unwrap(),
-                    value.as_ref(),
-                )
-            })
-            .unzip::<_, _, Vec<_>, Vec<_>>();
-        (Some(commitments), Some(states))
-    } else {
-        (None, None)
-    };
+    let commit_timer = Timer::new("Commit to all input", true);
+    let (commitments, _states) = values
+        .iter()
+        .map(|value| {
+            local_commit_impl::<C, ECCConfig>(
+                prover_setup.p_keys.get(&value.as_ref().len()).unwrap(),
+                value.as_ref(),
+            )
+        })
+        .unzip::<_, _, Vec<_>, Vec<_>>();
     commit_timer.stop();
 
-    let prove_timer = Timer::new("Prove all kernels", global_mpi_config.is_root());
+    let prove_timer = Timer::new("Prove all kernels", true);
     let proofs = computation_graph
         .proof_templates()
         .iter()
         .map(|template| {
-            let commitment_values = template
+            let commitment_values: Vec<_> = template
                 .commitment_indices()
                 .iter()
                 .map(|&idx| values[idx].as_ref())
-                .collect::<Vec<_>>();
+                .collect();
 
-            let single_kernel_gkr_timer =
-                Timer::new("small gkr kernel", global_mpi_config.is_root());
-            let gkr_end_state = prove_kernel_gkr::<C::FieldConfig, C::TranscriptConfig, ECCConfig>(
-                global_mpi_config,
-                &computation_graph.kernels()[template.kernel_id()],
-                &commitment_values,
-                next_power_of_two(template.parallel_count()),
-                template.is_broadcast(),
-            );
-            single_kernel_gkr_timer.stop();
+            let parallel_count = next_power_of_two(template.parallel_count());
+            let kernel = &computation_graph.kernels()[template.kernel_id()];
 
-            if global_mpi_config.is_root() {
-                let pcs_open_timer = Timer::new("pcs open", true);
-                let (mut transcript, challenge) = gkr_end_state.unwrap();
-                let challenges = if let Some(challenge_y) = challenge.challenge_y() {
-                    vec![challenge.challenge_x(), challenge_y]
-                } else {
-                    vec![challenge.challenge_x()]
-                };
+            let (mut expander_circuit, mut prover_scratch) =
+                prepare_expander_circuit::<C::FieldConfig, ECCConfig>(kernel, 1);
 
-                challenges.iter().for_each(|c| {
-                    partition_single_gkr_claim_and_open_pcs_mpi::<C>(
-                        prover_setup,
-                        &commitment_values,
-                        &template
-                            .commitment_indices()
-                            .iter()
-                            .map(|&idx| &states.as_ref().unwrap()[idx])
-                            .collect::<Vec<_>>(),
-                        c,
-                        template.is_broadcast(),
-                        &mut transcript,
-                    );
-                });
+            let mut proof_data = vec![];
+            for parallel_index in 0..parallel_count {
+                let local_vals = get_local_vals(
+                    &commitment_values,
+                    template.is_broadcast(),
+                    parallel_index,
+                    parallel_count,
+                );
 
-                pcs_open_timer.stop();
-                Some(ExpanderProof {
-                    data: vec![transcript.finalize_and_get_proof()],
-                })
-            } else {
-                None
+                let mut transcript = C::TranscriptConfig::new();
+                let challenge = prove_gkr_with_local_vals::<C::FieldConfig, C::TranscriptConfig>(
+                    &mut expander_circuit,
+                    &mut prover_scratch,
+                    &local_vals,
+                    kernel.layered_circuit_input(),
+                    &mut transcript,
+                    &MPIConfig::prover_new(),
+                );
+
+                partition_gkr_claims_and_open_pcs_no_mpi::<C>(
+                    &challenge,
+                    &commitment_values,
+                    prover_setup,
+                    template.is_broadcast(),
+                    parallel_index,
+                    parallel_count,
+                    &mut transcript,
+                );
+
+                proof_data.push(transcript.finalize_and_get_proof());
             }
+
+            ExpanderProof { data: proof_data }
         })
         .collect::<Vec<_>>();
     prove_timer.stop();
 
-    if global_mpi_config.is_root() {
-        let proofs = proofs.into_iter().map(|p| p.unwrap()).collect::<Vec<_>>();
-        Some(CombinedProof {
-            commitments: commitments.unwrap(),
-            proofs,
-        })
-    } else {
-        None
-    }
+    Some(CombinedProof {
+        commitments,
+        proofs,
+    })
 }
 
 #[allow(clippy::too_many_arguments)]
