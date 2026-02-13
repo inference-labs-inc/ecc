@@ -27,7 +27,9 @@ impl GKREngine for BN254ConfigSha2UniKZG {
 
 type Cfg = BN254ConfigSha2UniKZG;
 
-fn load_circuit(circuit_bytes: &[u8]) -> Result<expander_circuit::Circuit<<Cfg as GKREngine>::FieldConfig>, String> {
+fn load_circuit(
+    circuit_bytes: &[u8],
+) -> Result<expander_circuit::Circuit<<Cfg as GKREngine>::FieldConfig>, String> {
     let rc = RecursiveCircuit::<<Cfg as GKREngine>::FieldConfig>::deserialize_from(circuit_bytes)
         .map_err(|e| format!("failed to deserialize circuit: {e}"))?;
     let mut circuit = rc.flatten();
@@ -68,13 +70,17 @@ pub fn prove_inner(circuit_bytes: &[u8], witness_bytes: &[u8]) -> Result<Vec<u8>
     prover.prepare_mem(&circuit);
 
     let (pcs_params, pcs_proving_key, _, mut pcs_scratch) =
-        expander_pcs_init_testing_only::<<Cfg as GKREngine>::FieldConfig, <Cfg as GKREngine>::PCSConfig>(
-            circuit.log_input_size(),
-            &mpi_config,
-        );
+        expander_pcs_init_testing_only::<
+            <Cfg as GKREngine>::FieldConfig,
+            <Cfg as GKREngine>::PCSConfig,
+        >(circuit.log_input_size(), &mpi_config);
 
-    let (claimed_v, proof) =
-        prover.prove(&mut circuit, &pcs_params, &pcs_proving_key, &mut pcs_scratch);
+    let (claimed_v, proof) = prover.prove(
+        &mut circuit,
+        &pcs_params,
+        &pcs_proving_key,
+        &mut pcs_scratch,
+    );
 
     dump_proof_and_claimed_v(&proof, &claimed_v)
 }
@@ -97,11 +103,10 @@ pub fn verify_inner(
     >(proof_bytes)?;
 
     let mpi_config = MPIConfig::verifier_new(1);
-    let (pcs_params, _, pcs_verification_key, _) =
-        expander_pcs_init_testing_only::<<Cfg as GKREngine>::FieldConfig, <Cfg as GKREngine>::PCSConfig>(
-            circuit.log_input_size(),
-            &mpi_config,
-        );
+    let (pcs_params, _, pcs_verification_key, _) = expander_pcs_init_testing_only::<
+        <Cfg as GKREngine>::FieldConfig,
+        <Cfg as GKREngine>::PCSConfig,
+    >(circuit.log_input_size(), &mpi_config);
 
     let verifier = Verifier::<Cfg>::new(mpi_config);
     let public_input = circuit.public_input.clone();

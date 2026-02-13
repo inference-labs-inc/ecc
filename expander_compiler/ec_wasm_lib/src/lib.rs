@@ -22,10 +22,14 @@ pub fn solve_witness(
 
     let field_size = 32;
     if private_inputs.len() % field_size != 0 {
-        return Err(JsError::new("private_inputs length must be a multiple of 32"));
+        return Err(JsError::new(
+            "private_inputs length must be a multiple of 32",
+        ));
     }
     if public_inputs.len() % field_size != 0 {
-        return Err(JsError::new("public_inputs length must be a multiple of 32"));
+        return Err(JsError::new(
+            "public_inputs length must be a multiple of 32",
+        ));
     }
 
     let vars: Vec<CircuitField<BN254Config>> = private_inputs
@@ -57,8 +61,7 @@ pub fn solve_witness(
 
 #[wasm_bindgen]
 pub fn prove(circuit_bytes: &[u8], witness_bytes: &[u8]) -> Result<Vec<u8>, JsError> {
-    proving::prove_inner(circuit_bytes, witness_bytes)
-        .map_err(|e| JsError::new(&e))
+    proving::prove_inner(circuit_bytes, witness_bytes).map_err(|e| JsError::new(&e))
 }
 
 #[wasm_bindgen]
@@ -67,6 +70,5 @@ pub fn verify(
     witness_bytes: &[u8],
     proof_bytes: &[u8],
 ) -> Result<bool, JsError> {
-    proving::verify_inner(circuit_bytes, witness_bytes, proof_bytes)
-        .map_err(|e| JsError::new(&e))
+    proving::verify_inner(circuit_bytes, witness_bytes, proof_bytes).map_err(|e| JsError::new(&e))
 }

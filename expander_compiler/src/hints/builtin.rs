@@ -29,7 +29,6 @@ pub enum BuiltinHintIds {
     ToBinary,
 }
 
-
 impl BuiltinHintIds {
     pub fn from_usize(id: usize) -> Option<BuiltinHintIds> {
         if id < (BuiltinHintIds::Identity as u64 as usize) {
