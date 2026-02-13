@@ -126,7 +126,7 @@ impl<C: Config, I: InputType> ExpSerde for Segment<C, I> {
     }
 }
 
-const MAGIC: usize = 3914834606642317635;
+const MAGIC: u64 = 3914834606642317635;
 
 impl<C: Config, I: InputType> ExpSerde for Circuit<C, I> {
     fn serialize_into<W: Write>(&self, mut writer: W) -> SerdeResult<()> {
@@ -141,7 +141,7 @@ impl<C: Config, I: InputType> ExpSerde for Circuit<C, I> {
         Ok(())
     }
     fn deserialize_from<R: Read>(mut reader: R) -> SerdeResult<Self> {
-        let magic = usize::deserialize_from(&mut reader)?;
+        let magic = u64::deserialize_from(&mut reader)?;
         if magic != MAGIC {
             return Err(IoError::new(
                 std::io::ErrorKind::InvalidData,

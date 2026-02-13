@@ -11,8 +11,8 @@ arith.workspace = true
 expander_binary.workspace = true
 expander_circuit.workspace = true
 expander_transcript.workspace = true
-gkr.workspace = true
-gkr_engine.workspace = true
+gkr = { workspace = true, features = ["parallel", "all_fields"] }
+gkr_engine = { workspace = true, features = ["all_fields"] }
 rand.workspace = true
 serdes.workspace = true
 
