@@ -1,0 +1,23 @@
+[package]
+name = "ec_wasm_lib"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "=0.2.100"
+arith.workspace = true
+expander_circuit.workspace = true
+expander_transcript.workspace = true
+gkr = { workspace = true, default-features = false }
+gkr_engine = { workspace = true, default-features = false }
+gkr_hashers.workspace = true
+halo2curves.workspace = true
+poly_commit = { workspace = true, default-features = false }
+serdes.workspace = true
+expander_compiler = { path = "../", default-features = false }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+getrandom = { version = "0.2", features = ["js"] }

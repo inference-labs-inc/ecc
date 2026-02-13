@@ -29,8 +29,6 @@ pub enum BuiltinHintIds {
     ToBinary,
 }
 
-#[cfg(not(target_pointer_width = "64"))]
-compile_error!("compilation is only allowed for 64-bit targets");
 
 impl BuiltinHintIds {
     pub fn from_usize(id: usize) -> Option<BuiltinHintIds> {

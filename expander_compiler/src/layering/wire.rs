@@ -55,7 +55,7 @@ impl LayoutQuery {
             };
         }
         let mut ps = vec![0; vs.len()];
-        let mut l: usize = 1 << 62;
+        let mut l: usize = 1 << (usize::BITS - 2);
         let mut r: usize = 0;
         for (i, x) in vs.iter().enumerate() {
             ps[i] = if let Some(x) = self.var_pos.get(x) {
@@ -74,7 +74,10 @@ impl LayoutQuery {
         xor |= xor >> 4;
         xor |= xor >> 8;
         xor |= xor >> 16;
-        xor |= xor >> 32;
+        #[cfg(target_pointer_width = "64")]
+        {
+            xor |= xor >> 32;
+        }
         xor ^= xor >> 1;
         let n = if xor == 0 { 1 } else { xor << 1 };
         let offset = if l <= r { l & !(n - 1) } else { 0 };

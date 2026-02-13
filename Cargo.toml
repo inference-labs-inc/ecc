@@ -4,6 +4,7 @@ members = [
     "circuit-std-rs",
     "expander_compiler",
     "expander_compiler/ec_go_lib",
+    "expander_compiler/ec_wasm_lib",
     "expander_compiler/macros",
     "rsa_circuit",
 ]
@@ -54,14 +55,33 @@ crosslayer_prototype = { git = "https://github.com/inference-labs-inc/Expander",
 expander_circuit = { git = "https://github.com/inference-labs-inc/Expander", tag = "v0.3.0", package = "circuit" }
 expander_transcript = { git = "https://github.com/inference-labs-inc/Expander", tag = "v0.3.0", package = "transcript" }
 expander_binary = { git = "https://github.com/inference-labs-inc/Expander", tag = "v0.3.0", package = "bin" }
-gkr = { git = "https://github.com/inference-labs-inc/Expander", tag = "v0.3.0" }
+gkr = { git = "https://github.com/inference-labs-inc/Expander", tag = "v0.3.0", default-features = false }
 gf2 = { git = "https://github.com/inference-labs-inc/Expander", tag = "v0.3.0" }
 mersenne31 = { git = "https://github.com/inference-labs-inc/Expander", tag = "v0.3.0" }
 goldilocks = { git = "https://github.com/inference-labs-inc/Expander", tag = "v0.3.0" }
-poly_commit = { git = "https://github.com/inference-labs-inc/Expander", tag = "v0.3.0", package = "poly_commit" }
+poly_commit = { git = "https://github.com/inference-labs-inc/Expander", tag = "v0.3.0", package = "poly_commit", default-features = false }
 polynomials = { git = "https://github.com/inference-labs-inc/Expander", tag = "v0.3.0" }
 sumcheck = { git = "https://github.com/inference-labs-inc/Expander", tag = "v0.3.0" }
 serdes = { git = "https://github.com/inference-labs-inc/Expander", tag = "v0.3.0", package = "serdes" }
-gkr_engine = { git = "https://github.com/inference-labs-inc/Expander", tag = "v0.3.0" }
+gkr_engine = { git = "https://github.com/inference-labs-inc/Expander", tag = "v0.3.0", default-features = false }
 gkr_hashers = { git = "https://github.com/inference-labs-inc/Expander", tag = "v0.3.0" }
 expander_utils = { git = "https://github.com/inference-labs-inc/Expander", tag = "v0.3.0", package = "utils" }
+
+[patch."https://github.com/inference-labs-inc/Expander"]
+arith = { path = "../../ExpanderCompilerCollection/Expander/arith" }
+babybear = { path = "../../ExpanderCompilerCollection/Expander/arith/babybear" }
+crosslayer_prototype = { path = "../../ExpanderCompilerCollection/Expander/crosslayer_prototype" }
+expander_circuit = { path = "../../ExpanderCompilerCollection/Expander/circuit", package = "circuit" }
+expander_transcript = { path = "../../ExpanderCompilerCollection/Expander/transcript", package = "transcript" }
+expander_binary = { path = "../../ExpanderCompilerCollection/Expander/bin", package = "bin" }
+gkr = { path = "../../ExpanderCompilerCollection/Expander/gkr" }
+gf2 = { path = "../../ExpanderCompilerCollection/Expander/arith/gf2" }
+mersenne31 = { path = "../../ExpanderCompilerCollection/Expander/arith/mersenne31" }
+goldilocks = { path = "../../ExpanderCompilerCollection/Expander/arith/goldilocks" }
+poly_commit = { path = "../../ExpanderCompilerCollection/Expander/poly_commit", package = "poly_commit" }
+polynomials = { path = "../../ExpanderCompilerCollection/Expander/arith/polynomials" }
+sumcheck = { path = "../../ExpanderCompilerCollection/Expander/sumcheck" }
+serdes = { path = "../../ExpanderCompilerCollection/Expander/serdes", package = "serdes" }
+gkr_engine = { path = "../../ExpanderCompilerCollection/Expander/gkr_engine" }
+gkr_hashers = { path = "../../ExpanderCompilerCollection/Expander/hasher", package = "gkr_hashers" }
+expander_utils = { path = "../../ExpanderCompilerCollection/Expander/utils", package = "utils" }
