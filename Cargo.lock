@@ -96,8 +96,8 @@ checksum = "5f0e0fee31ef5ed1ba1316088939cea399010ed7731dba877ed44aeb407a75ea"
 
 [[package]]
 name = "arith"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "ark-std",
  "criterion",
@@ -320,8 +320,8 @@ dependencies = [
 
 [[package]]
 name = "babybear"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "arith",
  "ark-std",
@@ -358,8 +358,8 @@ dependencies = [
 
 [[package]]
 name = "bin"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "arith",
  "babybear",
@@ -521,8 +521,8 @@ dependencies = [
 
 [[package]]
 name = "circuit"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "arith",
  "ark-std",
@@ -622,8 +622,8 @@ dependencies = [
 
 [[package]]
 name = "config_macros"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "gkr_engine",
  "gkr_hashers",
@@ -728,8 +728,8 @@ checksum = "d0a5c400df2834b80a4c3327b3aad3a4c4cd4de0629063962b03235697506a28"
 
 [[package]]
 name = "crosslayer_prototype"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "arith",
  "env_logger",
@@ -1060,8 +1060,8 @@ dependencies = [
 
 [[package]]
 name = "gf2"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "arith",
  "ark-std",
@@ -1077,8 +1077,8 @@ dependencies = [
 
 [[package]]
 name = "gf2_128"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "arith",
  "ark-std",
@@ -1090,8 +1090,8 @@ dependencies = [
 
 [[package]]
 name = "gkr"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "arith",
  "ark-std",
@@ -1122,8 +1122,8 @@ dependencies = [
 
 [[package]]
 name = "gkr_engine"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "arith",
  "babybear",
@@ -1140,8 +1140,8 @@ dependencies = [
 
 [[package]]
 name = "gkr_hashers"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "arith",
  "halo2curves",
@@ -1152,8 +1152,8 @@ dependencies = [
 
 [[package]]
 name = "goldilocks"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "arith",
  "ark-std",
@@ -1732,8 +1732,8 @@ dependencies = [
 
 [[package]]
 name = "mersenne31"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "arith",
  "ark-std",
@@ -2066,8 +2066,8 @@ dependencies = [
 
 [[package]]
 name = "poly_commit"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "arith",
  "ark-std",
@@ -2091,8 +2091,8 @@ dependencies = [
 
 [[package]]
 name = "polynomials"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "arith",
  "ark-std",
@@ -2499,8 +2499,8 @@ dependencies = [
 
 [[package]]
 name = "serdes"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "ethnum",
  "halo2curves",
@@ -2510,8 +2510,8 @@ dependencies = [
 
 [[package]]
 name = "serdes_derive"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2639,8 +2639,8 @@ checksum = "13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292"
 
 [[package]]
 name = "sumcheck"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "arith",
  "circuit",
@@ -2902,8 +2902,8 @@ dependencies = [
 
 [[package]]
 name = "transcript"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "arith",
  "gkr_engine",
@@ -2925,8 +2925,8 @@ dependencies = [
 
 [[package]]
 name = "tree"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "arith",
  "ark-std",
@@ -3034,8 +3034,8 @@ checksum = "06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821"
 
 [[package]]
 name = "utils"
-version = "0.1.0"
-source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.0#2bb07558bd2502cbb3c8d6732cbad68349abcc96"
+version = "0.3.0"
+source = "git+https://github.com/inference-labs-inc/Expander?tag=v0.3.1#860b9f44d4dfd9c872caeb855da1609bbb37eed2"
 dependencies = [
  "colored",
 ]
