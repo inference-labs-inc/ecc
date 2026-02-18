@@ -1,7 +1,7 @@
 use std::{fmt::Debug, hash::Hash};
 
 pub use gkr::{
-    BN254ConfigMIMC5Raw, BabyBearx16ConfigSha2Raw, GF2ExtConfigSha2Raw, Goldilocksx8ConfigSha2Raw,
+    BN254ConfigSha2Raw, BabyBearx16ConfigSha2Raw, GF2ExtConfigSha2Raw, Goldilocksx8ConfigSha2Raw,
     M31x16ConfigSha2RawVanilla,
 };
 use gkr_engine::{FieldEngine, GKREngine};
@@ -34,7 +34,7 @@ pub type CircuitField<C> = <<C as GKREngine>::FieldConfig as FieldEngine>::Circu
 pub type ChallengeField<C> = <<C as GKREngine>::FieldConfig as FieldEngine>::ChallengeField;
 pub type SIMDField<C> = <<C as GKREngine>::FieldConfig as FieldEngine>::SimdCircuitField;
 
-pub type BN254Config = BN254ConfigMIMC5Raw;
+pub type BN254Config = BN254ConfigSha2Raw;
 pub type M31Config = M31x16ConfigSha2RawVanilla;
 pub type GF2Config = GF2ExtConfigSha2Raw;
 pub type GoldilocksConfig = Goldilocksx8ConfigSha2Raw;
