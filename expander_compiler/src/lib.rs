@@ -10,3 +10,8 @@ pub mod hints;
 pub mod layering;
 pub mod utils;
 pub mod zkcuda;
+
+pub use expander_binary;
+pub use expander_circuit;
+pub use gkr_engine;
+pub use serdes;
