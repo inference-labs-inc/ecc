@@ -766,6 +766,32 @@ impl<C: Config, I: InputType> Circuit<C, I> {
         )
     }
 
+    pub fn eval_constraint_values(
+        &self,
+        inputs: Vec<CircuitField<C>>,
+        public_inputs: &[CircuitField<C>],
+    ) -> Vec<CircuitField<C>> {
+        if inputs.len() != self.input_size() {
+            panic!("input length mismatch");
+        }
+        let mut cur = vec![inputs];
+        for id in self.layer_ids.iter() {
+            let mut next = vec![CircuitField::<C>::zero(); self.segments[*id].num_outputs];
+            let mut inputs: Vec<&[CircuitField<C>]> = Vec::new();
+            for i in 0..self.segments[*id].num_inputs.len() {
+                inputs.push(&cur[cur.len() - i - 1]);
+            }
+            self.apply_segment_with_public_inputs(
+                &self.segments[*id],
+                &inputs,
+                &mut next,
+                public_inputs,
+            );
+            cur.push(next);
+        }
+        cur.last().unwrap()[..self.expected_num_output_zeroes].to_vec()
+    }
+
     fn apply_segment_with_public_inputs(
         &self,
         seg: &Segment<C, I>,
