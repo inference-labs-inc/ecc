@@ -772,7 +772,11 @@ impl<C: Config, I: InputType> Circuit<C, I> {
         public_inputs: &[CircuitField<C>],
     ) -> Vec<CircuitField<C>> {
         if inputs.len() != self.input_size() {
-            panic!("input length mismatch");
+            panic!(
+                "input length mismatch: expected {}, got {}",
+                self.input_size(),
+                inputs.len()
+            );
         }
         let mut cur = vec![inputs];
         for id in self.layer_ids.iter() {
